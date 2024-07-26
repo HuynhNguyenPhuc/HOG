@@ -156,7 +156,7 @@ public class SVMHelper {
         }
 
         System.out.println("Best C: " + bestC + ", Best Gamma: " + bestGamma + ", Best Accuracy: " + bestAccuracy);
-        return fit(training_data, labels, bestC, bestGamma);
+        return fit(training_data, labels, bestC);
     }
 
     public static svm_parameter getLinearParam(double C){

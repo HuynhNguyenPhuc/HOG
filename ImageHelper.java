@@ -378,6 +378,15 @@ public class ImageHelper {
     }
 
     public static void save(BufferedImage image, String path) {
+        BufferedImage rgbImage = new BufferedImage(
+            image.getWidth(),
+            image.getHeight(),
+            BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g = rgbImage.createGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+
         String filePath = path.substring(0, path.lastIndexOf('/'));
         String fileName = path.substring(path.lastIndexOf('/') + 1);
         
@@ -387,7 +396,7 @@ public class ImageHelper {
         }
 
         try {
-            ImageIO.write(image, "png", new File(filePath + "/" + fileName));
+            ImageIO.write(rgbImage, "png", new File(filePath + "/" + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

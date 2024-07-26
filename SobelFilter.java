@@ -1,4 +1,4 @@
-public class SobelFilter {
+public class SobelFilter implements Filter{
     public static final float[][] kernelX = {
         {-1, 0, 1},
         {-2, 0, 2},
