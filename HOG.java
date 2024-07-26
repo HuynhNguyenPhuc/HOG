@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 import libsvm.svm_model;
 
@@ -49,7 +48,7 @@ public class HOG {
 
     private float[] computeHistogram(int x, int y) {
         float[] histogram = new float[this.nbins];
-        float degree_per_bin = 180.0f / this.nbins;
+        float degree_per_bin = 360.0f / this.nbins;
 
         for (int dy = 0; dy < pixels_per_cell[0]; dy++) {
             for (int dx = 0; dx < pixels_per_cell[1]; dx++) {
@@ -121,16 +120,14 @@ public class HOG {
         return descriptor;
     }
 
-    public List<Rectangle> detectMultiScale(short[] winSize, short[] winStride, short[] padding, float scaleFactor, float threshold) {
+    public List<Rectangle> detectMultiScale(short[] winSize, short[] winStride, float scaleFactor, float threshold, int groupThreshold) {
         List<Rectangle> detections = new ArrayList<>();
         List<Float> weights = new ArrayList<>();
     
         float scale = 1.0f;
     
         while (true) {
-            BufferedImage buffer = ImageHelper.convertToRGB(this.image);
-            BufferedImage scaledBuffer = ImageHelper.scaleImage(buffer, scale);
-            float[][] scaledImage = ImageHelper.convertToGrayscaleArray(scaledBuffer);
+            float[][] scaledImage = (float[][]) ImageHelper.scale(this.image, scale);
 
             int scaledHeight = scaledImage.length;
             int scaledWidth = scaledImage[0].length;
@@ -148,6 +145,7 @@ public class HOG {
                     HOG hog = new HOG(window, nbins, pixels_per_cell, cells_per_block, model);
                     float[] descriptor = hog.compute();
                     double[] scores = SVMHelper.predict_probability(this.model, descriptor);
+                    // System.out.println("Scores: " + scores[0] + ", " + scores[1]);
                     if (scores[0] > threshold) {
                         int originalX = (int) (x / scale);
                         int originalY = (int) (y / scale);
@@ -162,8 +160,8 @@ public class HOG {
             scale /= scaleFactor;
         }
 
-        List<Rectangle> rects = RectangleHelper.nonMaximumSuppression(detections, weights, 0.3f);
-        List<Rectangle> mergedRects = RectangleHelper.merge(rects);
+        List<Rectangle> rects = RectangleHelper.proposedNMS(detections, weights, 0.3f);
+        List<Rectangle> mergedRects = RectangleHelper.groupRectangles(rects, groupThreshold, 0.5f);
         if (mergedRects.size() == 0){
             System.out.println("No rectangles detected.");
         }
@@ -179,10 +177,10 @@ public class HOG {
         int image_width = imageSize[0];
         int image_height = imageSize[1];
 
-        int cellWidth = pixels_per_cell[0];
-        int cellHeight = pixels_per_cell[1];
-        int blockWidth = cells_per_block[0];
-        int blockHeight = cells_per_block[1];
+        int cellWidth = pixels_per_cell[1];
+        int cellHeight = pixels_per_cell[0];
+        int blockWidth = cells_per_block[1];
+        int blockHeight = cells_per_block[0];
 
         int n_x_cells = image_width / cellWidth;
         int n_y_cells = image_height / cellHeight;

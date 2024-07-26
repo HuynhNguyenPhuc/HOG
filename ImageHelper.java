@@ -15,8 +15,8 @@ public class ImageHelper {
         try {
             BufferedImage image = ImageIO.read(new File(filePath));
             if (resize != null && resize.length == 2) {
-                int newWidth = resize[0];
-                int newHeight = resize[1];
+                int newWidth = resize[1];
+                int newHeight = resize[0];
                 image = resizeImage(image, newWidth, newHeight);
             }
 
@@ -283,7 +283,9 @@ public class ImageHelper {
         for (int y = 0; y < gradients.length; y++) {
             for (int x = 0; x < gradients[0].length; x++) {
                 float radians = (float) Math.atan2(gradients[y][x][1], gradients[y][x][0]);
-                angle[y][x] = (float) Math.toDegrees(radians);
+                float degrees = (float) Math.toDegrees(radians);
+                if (degrees < 0) degrees += 360.0f;
+                angle[y][x] = degrees;
             }
         }
         return angle;
