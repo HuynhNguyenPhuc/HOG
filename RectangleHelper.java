@@ -25,11 +25,11 @@ public class RectangleHelper {
         int rect2Area = rect2.width * rect2.height;
 
         int aL = Math.max(rect1Area, rect2Area);
-        int aS = Math.max(rect1Area, rect2Area);
+        int aS = Math.min(rect1Area, rect2Area);
 
         float threshold = ((float) aS) / (aL + aS);
         
-        float lambda = threshold / 2.0f;
+        float lambda = threshold / 2.0f + threshold / 2.0f * ((float) Math.random() - 0.5f);
 
         int x1 = Math.max(rect1.x, rect2.x);
         int y1 = Math.max(rect1.y, rect2.y);
