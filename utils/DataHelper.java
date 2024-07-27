@@ -1,3 +1,5 @@
+package utils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -5,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import hog.HOG;
 
 public class DataHelper {
     public static void getTrainingData(String positive_path, String negative_path, String savePath, int[] size, int nbins, short[] pixels_per_cell, short[] cells_per_block){

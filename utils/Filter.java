@@ -1,3 +1,5 @@
+package utils;
+
 public interface Filter {
     public static final float[][] kernelX = {
         {0, 0, 0},

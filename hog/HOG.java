@@ -1,8 +1,15 @@
+package hog;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Rectangle;
 
+import classifier.SVMHelper;
 import libsvm.svm_model;
+
+import utils.ImageHelper;
+import utils.RectangleHelper;
+import utils.SobelFilter;
 
 public class HOG {
     private float[][] image;

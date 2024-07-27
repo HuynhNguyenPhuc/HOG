@@ -1,3 +1,5 @@
+package utils;
+
 public class SobelFilter implements Filter{
     public static final float[][] kernelX = {
         {-1, 0, 1},

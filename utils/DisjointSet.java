@@ -1,3 +1,5 @@
+package utils;
+
 /* Reference: https://en.wikipedia.org/wiki/Disjoint-set_data_structure */
 public class DisjointSet {
     private int[] parent;
