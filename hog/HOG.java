@@ -141,11 +141,11 @@ public class HOG {
     
             int windowHeight = winSize[0];
             int windowWidth = winSize[1];
-    
+
             if (scaledHeight < windowHeight || scaledWidth < windowWidth) break;
     
-            for (int y = 0; y < scaledHeight - windowHeight; y += winStride[0]) {
-                for (int x = 0; x < scaledWidth - windowWidth; x += winStride[1]) {
+            for (int y = 0; y <= scaledHeight - windowHeight; y += winStride[0]) {
+                for (int x = 0; x <= scaledWidth - windowWidth; x += winStride[1]) {
                     float[][] window = (float[][]) ImageHelper.crop(scaledImage, x, y, windowWidth, windowHeight);
                     if (window == null) continue;
                     window = (float[][]) ImageHelper.resize(window, this.size[1], this.size[0], "bilinear");
